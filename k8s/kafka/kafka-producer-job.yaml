@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kafka-producer
+  namespace: kafka
+spec:
+  template:
+    spec:
+      containers:
+      - name: producer
+        image: pavan050/kafka-producer:latest
+        env:
+        - name: KAFKA_BOOTSTRAP_SERVERS
+          value: my-cluster-kafka-bootstrap.kafka:9092
+      restartPolicy: Never
+  backoffLimit: 2
+

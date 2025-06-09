@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otel-collector-config
+  namespace: default
+data:
+  otel-collector-config.yaml: |
+    receivers:
+      otlp:
+        protocols:
+          http: {}
+          grpc: {}
+
+      kafka:
+        brokers: ["my-cluster-kafka-bootstrap.kafka:9092"]
+        protocol_version: "2.0.0"
+
+      kubeletstats:
+        collection_interval: 30s
+        auth_type: "serviceAccount"
+
+    processors:
+      batch:
+
+    exporters:
+      logging:
+        logLevel: debug
+
+      otlphttp/kloudmate:
+        endpoint: https://otlp.kloudmate.com
+        headers:
+          Authorization: "Bearer sk_lVT15IxV4GCUkYxHhVS3zbYX"
+
+    service:
+      pipelines:
+        metrics:
+          receivers: [otlp, kafka, kubeletstats]
+          processors: [batch]
+          exporters: [otlphttp/kloudmate]
+
