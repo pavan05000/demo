@@ -7,7 +7,7 @@ trace.set_tracer_provider(TracerProvider())
 tracer = trace.get_tracer(__name__)
 
 exporter = OTLPSpanExporter(
-    endpoint="https://otlp.kloudmate.com/v1/traces",
+    endpoint="https://otel.kloudmate.com:4318/v1/traces",
     headers={"Authorization": "sk_m99L18ibJKWZvJffRH5RD2LB"},
 )
 
@@ -15,4 +15,4 @@ span_processor = BatchSpanProcessor(exporter)
 trace.get_tracer_provider().add_span_processor(span_processor)
 
 with tracer.start_as_current_span("manual-span-kloudmate"):
-    print("Span sent to KloudMate dashboard successfully")
+    print("Span sent to KloudMate traces successfully")
